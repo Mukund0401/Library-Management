@@ -3,3 +3,4 @@ library_management.access_book_author,access_book_author,library_management.mode
 library_management.access_book_details,access_book_details,library_management.model_book_details,base.group_user,1,1,1,1
 library_management.access_register_books,access_register_books,library_management.model_register_books,base.group_user,1,1,1,1
 library_management.access_issue_book,access_issue_book,library_management.model_issue_book,base.group_user,1,1,1,1
+library_management.access_register_date,access_register_date,library_management.model_register_date,base.group_user,1,1,1,1

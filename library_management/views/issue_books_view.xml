@@ -11,6 +11,7 @@
                 <field name="address"/>
                 <field name="phone"/>
                 <field name="issue_date"/>
+                <field name="return_date"/>
             </tree>
         </field>
     </record>
@@ -20,7 +21,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                      <button name="issue_book_view" class="oe_highlight" states="draft" string="Issue" type="object"/>
+                      <button name="return_view" class="oe_highlight" states="done" string="Return" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done,return"/>
                 </header>
                 <sheet>
                     <group>
@@ -30,6 +33,7 @@
                         <field name="email"/>
                         <field name="phone"/>
                         <field name="issue_date"/>
+                        <field name="return_date"/>
                     </group>
                 </sheet>
             </form>

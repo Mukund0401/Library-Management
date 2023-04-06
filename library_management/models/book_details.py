@@ -11,6 +11,7 @@ class BookDetails(models.Model):
 	Pages = fields.Integer(string="Book Pages")
 	book_id = fields.Char(string="Book Id",readonly=True,copy=False)
 	book_quantity = fields.Integer(string="Book Quantity")
+	available_quentity = fields.Integer(string="Avelible Quantity",readonly=True)
 
 
 
@@ -33,6 +34,19 @@ class BookDetails(models.Model):
 	def name_get(self):
 		result = []
 		for rec in self:
-		   name = rec.book_name+''+ str(rec.book_id)
+		   name = rec.book_name+''+ str(rec.author_detail_id.author_name) +str(rec.book_id)
 		   result.append((rec.id,name))
 		return result
+
+
+	def action_book_count(self):
+		for rec in self:
+			book_count = self.env['issue.book'].search([("book_name", "=",rec.book_name )])
+			print("::::::::::::::::::",book_count)
+				
+
+		# 	print("::::::::::",book_count.issue_quantity)
+		# 	print("::::::::::>>>><<<<<<<<",rec.book_quantity)
+		# 	# rec.avelible_quentity=rec.book_quantity-book_count.issue_quantity
+		
+		# print(":::::::::::::::::::::::::::::::::::::::::",rec.avelible_quentity)

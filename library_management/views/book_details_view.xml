@@ -9,6 +9,7 @@
                 <field name="author_detail_id"/>
                 <field name="book_name"/>
                 <field name="Price"/>
+                <field name="available_quentity"/>
             </tree>
         </field>
     </record>
@@ -19,6 +20,13 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                       <button name="action_book_count"
+                            type="object"
+                            class="oe_stat_button">
+                            <field string="Avelible Quantity" name="available_quentity" widget="statinfo"/>
+                        </button>  
+                    </div>
                     <group>
                         <field name="author_detail_id"/>
                         <field name="book_name"/>
@@ -26,6 +34,7 @@
                         <field name="Pages"/>
                         <field name="book_id"/>
                         <field name="book_quantity"/>
+                        <field name="available_quentity"/>
                     </group>
                 </sheet>
             </form>
