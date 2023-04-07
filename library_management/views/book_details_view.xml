@@ -6,10 +6,10 @@
         <field name="model">book.details</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="id"/>
                 <field name="author_detail_id"/>
                 <field name="book_name"/>
                 <field name="Price"/>
-                <field name="available_quentity"/>
             </tree>
         </field>
     </record>
@@ -21,20 +21,22 @@
             <form>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                       <button name="action_book_count"
+                       <button name="compute_book_count"
                             type="object"
-                            class="oe_stat_button">
+                            class="oe_stat_button" 
+                            icon="fa-pencil">
                             <field string="Avelible Quantity" name="available_quentity" widget="statinfo"/>
                         </button>  
                     </div>
                     <group>
+                        <field name="id"/>
                         <field name="author_detail_id"/>
                         <field name="book_name"/>
                         <field name="Price"/>
                         <field name="Pages"/>
                         <field name="book_id"/>
                         <field name="book_quantity"/>
-                        <field name="available_quentity"/>
+                        <field name='book_type_ids'/>
                     </group>
                 </sheet>
             </form>

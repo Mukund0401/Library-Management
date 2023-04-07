@@ -3,3 +3,4 @@ from . import book_details
 from . import register_books
 from . import issue_book
 from . import register_date
+from . import book_type

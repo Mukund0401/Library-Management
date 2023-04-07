@@ -45,13 +45,17 @@ class IssueBook(models.Model):
 			rec.write({'state':'done'})
 			rec.issue_date = date.today()
 			for line in rec.books_line_ids:
+				bookid_get = self.env['book.details'].search([('id', '=', line.book_detail_id.id)])
+				globle_book_id = bookid_get.id
 				for _ in range(line.issue_quantity or 1):
 					print("\n\n\n", rec.books_line_ids)
 					register.create({
-						'book_id': rec.books_line_ids,
+						'book_id': globle_book_id,
 						'book_name':line.book_detail_id.book_name,
 						'issuing_date':rec.issue_date
 						})
+		
+
 	
 
 
@@ -62,9 +66,9 @@ class IssueBook(models.Model):
 		for rec in self:
 			rec.write({'state': "return"})
 			rec.return_date = date.today()
-		for data in self.books_line_ids:
-			register = self.env["register.date"].search([("book_id", "=", data.id)])
-			register.return_date = date.today()
+			for data in rec.books_line_ids:
+				register = self.env["register.date"].search([("book_id", "=", data.book_detail_id.id)])
+				register.return_date = date.today()
 		# fields = ['name','city']
 		# partner_id = self.env['res.partner'].read_group([('city','=','Fremont')], 
 		# 	fields=['name'],groupby=['city','name'])
