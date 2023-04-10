@@ -10,6 +10,7 @@
                 <field name="user_id"/>
                 <field name="address"/>
                 <field name="phone"/>
+                <field name="book_name_id"/>
                 <field name="issue_date"/>
                 <field name="return_date"/>
             </tree>
@@ -26,15 +27,32 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,done,return"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                       <button name="ref_button"
+                            type="object"
+                            class="btn btn-primary"
+                            string="Author">
+                        </button>  
+                    </div>
                     <group>
-                        <field name="user_id"/>
-                        <field name="books_line_ids"/>
-                        <field name="address"/>
-                        <field name="email"/>
-                        <field name="phone"/>
-                        <field name="issue_date"/>
-                        <field name="return_date"/>
+                        <group>
+                            <field name="user_id"/>
+                            <field name="address"/>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="issue_date"/>
+                            <field name="return_date"/>
+                        </group>
+                        <group>
+                            <field name="book_name_id"/>
+                            <field name="book_quantity"/>
+                        </group>
                     </group>
+                    <notebook>
+                        <page string="Book Details">
+                        <field name="books_line_ids"/>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

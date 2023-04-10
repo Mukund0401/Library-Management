@@ -9,10 +9,18 @@ class IssueBook(models.Model):
 	address = fields.Char(string="Address")
 	email = fields.Char(string="Email")
 	phone = fields.Char(string="Phone Number")
+	book_name_id = fields.Many2one('book.details',string="Book Name")
+	book_quantity = fields.Integer(string="Book Quantity")
 	issue_date = fields.Date(string="Issue Date", readonly=True)
 	return_date = fields.Date(string=" Return Date", readonly=True)
 	state = fields.Selection(selection=[('draft', 'Not_IssueBook'),('done', 'IssueBook'),('return','Thank u')], string='Status', required=True, readonly=True, copy=False, tracking=True, default='draft')
 
+	# def unlink(self):
+	# 	model_rec = self.env['register.books'].search([('id','=',self.books_line_ids.ids)])
+	# 	for rec in model_rec:
+	# 		rec.unlink()
+	# 		print("abcdfddsgs",rec)
+	# 	return super(IssueBook,self).unlink()
 
 	# @api.model
 	# def create(self,vals):
@@ -23,6 +31,17 @@ class IssueBook(models.Model):
 	# 		print("::::::::::::::::::::::::::::::::::::::::::::::::",seq)
 	# 		vals['book_code'] = seq.book_name
 	# 	return super(IssueBook,self).create(vals)
+
+
+	def ref_button(self):
+		vals={
+			'issue_quantity' : self.book_quantity,
+			'book_detail_id' : self.book_name_id.book_name,
+		}
+		self.write({
+			'books_line_ids' :[(0,0,vals)]
+			})
+
 
 	@api.onchange("user_id")
 	def _onchange_name_detail(self):

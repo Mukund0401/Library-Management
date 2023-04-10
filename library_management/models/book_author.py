@@ -8,3 +8,15 @@ class BookAuthor(models.Model):
 	address	= fields.Char(string="Address")
 	email = fields.Char(string="Email")
 	contact_no = fields.Char(string="Contact Number")
+
+
+	# def ref_button(self):
+	# 	vals={
+	# 	'author_name':"Mukund"
+	# 	# 'address':"paldi",
+	# 	# 'email':'Mukund@1404',
+	# 	# 'contact_no':7227945509
+	# 	}
+	# 	self.create({
+	# 		'author_name':[(0,0,vals)]
+	# 		})
