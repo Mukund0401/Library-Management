@@ -13,6 +13,7 @@ class BookDetails(models.Model):
 	book_quantity = fields.Integer(string="Book Quantity")
 	available_quentity = fields.Integer(string="available_quentity" ,compute="compute_book_count")
 	book_type_ids = fields.Many2many('book.type',string='Book Type')
+	book_charge = fields.Integer(string='Book Charge')
 
 
 	@api.model

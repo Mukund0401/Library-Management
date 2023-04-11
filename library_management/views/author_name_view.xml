@@ -40,7 +40,7 @@
             sequence="1"/>
 
     <menuitem id="book_author_details"
-            name="author"
+            name="Author"
             parent="author_information"
             action="action_author_information"
             sequence="2"/>

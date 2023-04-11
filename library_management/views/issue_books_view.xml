@@ -46,6 +46,8 @@
                         <group>
                             <field name="book_name_id"/>
                             <field name="book_quantity"/>
+                            <field name='deadline_date'/>
+                            <field name='total_charge'/>
                         </group>
                     </group>
                     <notebook>

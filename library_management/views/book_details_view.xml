@@ -9,7 +9,7 @@
                 <field name="id"/>
                 <field name="author_detail_id"/>
                 <field name="book_name"/>
-                <field name="Price"/>
+                <field name="book_charge"/>
             </tree>
         </field>
     </record>
@@ -29,14 +29,19 @@
                         </button>  
                     </div>
                     <group>
-                        <field name="id"/>
-                        <field name="author_detail_id"/>
-                        <field name="book_name"/>
-                        <field name="Price"/>
-                        <field name="Pages"/>
-                        <field name="book_id"/>
-                        <field name="book_quantity"/>
-                        <field name='book_type_ids' widget='many2many_tags'/>
+                        <group>
+                            <field name="id"/>
+                            <field name="author_detail_id"/>
+                            <field name="book_name"/>
+                            <field name="Price"/>
+                            <field name='book_charge'/>
+                        </group>
+                        <group>
+                            <field name="Pages"/>
+                            <field name="book_id"/>
+                            <field name="book_quantity"/>
+                            <field name='book_type_ids' widget='many2many_tags'/>
+                        </group>
                     </group>
                 </sheet>
             </form>
