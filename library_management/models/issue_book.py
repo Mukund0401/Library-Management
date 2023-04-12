@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from datetime import date, timedelta, datetime
+from odoo.exceptions import ValidationError
 
 
 class IssueBook(models.Model):
@@ -19,6 +20,27 @@ class IssueBook(models.Model):
 	total_charge = fields.Integer(string="Total Charge", compute="compute_total_charge")
 
 
+	_sql_constraints = [('xyz', 'unique(phone)', 'xyz')]
+
+
+
+	# @api.constraints
+	# def check_email(self):
+
+
+	def unlink(self):
+		model_rec = self.env['register.books'].search([('id','=',self.books_line_ids.id)])
+		for rec in model_rec:
+			rec.unlink()
+			print("ncfbbcfedfbcvd",rec)
+		return super(IssueBook,self).unlink()
+
+	# def unlink(self):
+	# 	test_unlnk = self.env['register.books'].search([('empty_id','=',self.id)]).unlink()
+	# 	if 'empty_id' in test_unlnk:
+	# 		raise ValidationError("HELlo")
+	# 	return super(IssueBook,self).unlink()
+	# 	print(":::::::::::::::::::::::","Hello")
 
 	def compute_deadline(self):
 		for rec in self:
@@ -38,42 +60,36 @@ class IssueBook(models.Model):
 	def compute_total_charge(self):
 		for rec in self:
 			rec.total_charge = 0
-			for record in rec.books_line_ids:
-				for_charge = self.env['book.details'].search([('id','=',record.book_detail_id.id)]).book_charge
-				# print('\n\n\n\n\n\n\n\n\n\n\n\n',for_charge)
-					
-					# print(":::::::::::::::::::::::::::::::::",rec.total_charge)
-				# if rec.return_date and rec.deadline_date<rec.return_date:
-					days_calculation = str(rec.return_date - rec.deadline_date)
-					days_calculation = days_calculation[0:2]
-					caluculation_days = int(days_calculation)//5
-					print('::::::::::::::',caluculation_days)
-					print('::::::::::::::',days_calculation)
+			if rec.return_date:
+				for record in rec.books_line_ids:
+					for_charge = self.env['book.details'].search([('id','=',record.book_detail_id.id)]).book_charge
+					if str(rec.return_date) > str(rec.deadline_date):
+						rec.total_charge += for_charge
+				if rec.total_charge:
+					days_calculation = (rec.return_date - rec.deadline_date).days
+					if (days_calculation//5) == 0:
+						rec.total_charge = rec.total_charge
+					else:
+						for i in range((days_calculation // 5) - 1):
+							rec.total_charge += rec.total_charge
 
-					# rec.total_charge = rec.total_charge * caluculation_days + for_charge
+	"""
+		# To count the delay charges
+	def _compute_delay_charges(self):
+		for rec in self:
+			rec.delay_charges = 0
+			if rec.return_date:
+				for book in rec.book_lines_ids:
+					charges = self.env["book.details"].search([("id", "=", book.book_name_id.id)]).book_delay_charges
+					if str(rec.return_date) > str(rec.deadline_date):
+						rec.delay_charges += charges
+			if rec.delay_charges:
+				total_day = (rec.return_date - rec.deadline_date).days
+				print(rec.delay_charges)
+				for i in range((total_day // 5) - 1):
+					rec.delay_charges += rec.delay_charges
 
-
-					# print('\n\n\n\n\n\n\n\n\n\n\n\n',days_calculation)
-					# print(":::::::::::::::::::<<<<>>>>>>",type(caluculation_days))
-					# rec.total_charge = (caluculation_days) * for_charge
-					for data in range(caluculation_days):
-						for_charge += for_charge
-						rec.total_charge = rec.total_charge * caluculation_days
-						rec.total_charge = rec.total_charge + for_charge
-
-					# print("::::::::::\n\n\n",type(days_calculation),days_calculation)
-					# print(":::::::\n\n\n\n",days_calculation)
-					# if int(days_calculation) > 5 and int(days_calculation) <10:
-					# 	print(":::::::::::::::<<<<>>>>>>>\n\n\n",'abcbdh')
-					# 	rec.total_charge = for_charge
-					# else:
-					# 	print(":::::::::::::::<<<<>>>>>>>\n\n\n",'12345')
-					# 	rec.total_charge = for_charge * 2 
-
-
-
-
-
+	"""
 
 
 
@@ -90,6 +106,8 @@ class IssueBook(models.Model):
 	@api.onchange("user_id")
 	def _onchange_name_detail(self):
 		for rec in self:
+			read_data = self.env["res.partner"].search_read([("id", "=", rec.user_id.id)],['user_id',"email",'phone'])
+			print("\n\n\n\n\n",read_data)
 			rec.email = ""
 			if rec.user_id:
 				res_data = self.env["res.partner"].search([("id", "=", rec.user_id.id)])

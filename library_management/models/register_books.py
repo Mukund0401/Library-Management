@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 class RegisterBooks(models.Model):
 	_name = 'register.books'
@@ -9,6 +10,27 @@ class RegisterBooks(models.Model):
 	issue_quantity = fields.Integer(string="Issue Quantity")
 	book_types_ids = fields.Many2many("book.type",string="Book Type")
 
+
+
+
+	# def unlink(self):
+	# 	test_link = self.env['issue.book'].search([]).books_line_ids.book_detail_id
+	# 	print("::::::::::>>><<<<<<<<",test_link)
+	# 	for rec in test
+		# # if 'id' in test_link:
+		# # 	raise ValidationError("Sorry You Can't delete this file")
+		# # else:
+		# return super(RegisterBooks,self).unlink()
+
+	
+
+
+	# def unlink(self):
+	# 	model_rec = self.env['issue.book'].search([]).books_line_ids.book_detail_id
+	# 	for rec in model_rec:
+	# 		for record in self.book_detail_id:
+	# 			if rec.id == record.id:
+	# 				raise ValidationError("YOU CANONOT DELETE THIS RECORD")
 
 	@api.onchange('book_detail_id')
 	def _onchange_book_type(self):

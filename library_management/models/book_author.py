@@ -9,6 +9,8 @@ class BookAuthor(models.Model):
 	email = fields.Char(string="Email")
 	contact_no = fields.Char(string="Contact Number")
 
+	
+
 
 	# def ref_button(self):
 	# 	vals={
