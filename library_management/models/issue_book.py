@@ -119,12 +119,12 @@ class IssueBook(models.Model):
 					rec.address = str(res_data.street)+"\n"+str(res_data.street2)+"\n"+str(res_data.zip)+"\n"+str(res_data.city)
 
 
+	
+
 	def issue_book_view(self):
-		# change_outcoming_date = self.env["register.books"].search([()]
-		register = self.env['register.date']
 		for rec in self:
-			rec.write({'state':'done'})
-			rec.issue_date = date.today()
+			# rec.write({'state':'done'})
+			register = self.env['register.date']
 			for line in rec.books_line_ids:
 				bookid_get = self.env['book.details'].search([('id', '=', line.book_detail_id.id)])
 				globle_book_id = bookid_get.id
@@ -135,6 +135,22 @@ class IssueBook(models.Model):
 						'book_name':line.book_detail_id.book_name,
 						'issuing_date':rec.issue_date
 						})
+		action = {
+			'type':"ir.actions.act_window",
+			'res_model':"issue.book.button",
+			'name':("ISSUE DATE"),
+			'view_mode':'form',
+			'target':'new',
+			'context':{
+				"default_issue_date":date.today(),
+				# "default_book_name":rec.book_name_id.book_name
+			}
+		}
+		return action
+		
+		# change_outcoming_date = self.env["register.books"].search([()]
+		
+
 		
 
 	
