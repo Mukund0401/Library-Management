@@ -19,21 +19,75 @@ class IssueBook(models.Model):
 	deadline_date = fields.Date(string="Deadline", compute='compute_deadline')
 	total_charge = fields.Integer(string="Total Charge", compute="compute_total_charge")
 
+	@api.onchange('book_quantity')
+	def _onchange_book_quantity(self):
+		for rec in self:
+			for line in rec.books_line_ids:
+				register_book_data = self.env["register.books"].search([('id','=',line.id)])
+				print(":::::::::::::::::::::::::::::",register_book_data)
+				# register_book_data.id = element.id
 
-	_sql_constraints = [('xyz', 'unique(phone)', 'xyz')]
+		# record_book = self.env["book.details"].search([('id','=',self.book_name_id.id)])
+
+		# vals= {
+		# 	"book_detail_id": self.book_name_id.id,
+		# 	"issue_quantity":self.book_quantity,
+		# 	"book_types_ids":[(6,0, record_book.book_type_ids.ids)]
+		# }		
+
+		# vals = {
+		# 	"book_name_id" : "33",
+		# 	"issue_quantity" : 2,
+		# }
+		# self.write({'books_line_ids' : [(0,0,vals)]})
+		# for line in self.books_line_ids:
+		# 	line.write({
+		# 		'book_detail_id':self.book_name_id.book_name,
+		# 		})
+			# print("::::\n\n\n",line.book_detail_id.book_name)
+			# bookid_get = self.env['book.details'].search([('id', '=', line.book_detail_id.id)])
+			# globle_book_id = bookid_get.id
+			# for _ in range(line.issue_quantity or 1):
+			# 	book_line.write({
+			# 		'book_name':line.book_detail_id.book_name
+			# 		})
+
+
+
+	# def issue_book_view(self):
+	# 	for rec in self:
+	# 		# rec.write({'state':'done'})
+	# 		register = self.env['register.date']
+	# 		for line in rec.books_line_ids:
+	# 			bookid_get = self.env['book.details'].search([('id', '=', line.book_detail_id.id)])
+	# 			globle_book_id = bookid_get.id
+	# 			for _ in range(line.issue_quantity or 1):
+	# 				print("\n\n\n", rec.books_line_ids)
+	# 				register.create({
+	# 					'book_id': globle_book_id,
+	# 					'book_name':line.book_detail_id.book_name,
+	# 					'issuing_date':date.today()
+	# 					})
+		
+
+	# _sql_constraints = [('xyz', 'unique(phone)', 'xyz')]
 
 
 
 	# @api.constraints
 	# def check_email(self):
 
+	def issue_book_mail(self):
+		template = self.env.ref('library_management.user_mail_id').id
+		template_id = self.env['mail.template'].browse(template)
+		template_id.send_mail(self.id , force_send = True)
 
-	def unlink(self):
-		model_rec = self.env['register.books'].search([('id','=',self.books_line_ids.id)])
-		for rec in model_rec:
-			rec.unlink()
-			print("ncfbbcfedfbcvd",rec)
-		return super(IssueBook,self).unlink()
+	# def unlink(self):
+	# 	model_rec = self.env['register.books'].search([('id','=',self.books_line_ids.id)])
+	# 	for rec in model_rec:
+	# 		rec.unlink()
+	# 		# print("ncfbbcfedfbcvd",rec)
+	# 	return super(IssueBook,self).unlink()
 
 	# def unlink(self):
 	# 	test_unlnk = self.env['register.books'].search([('empty_id','=',self.id)]).unlink()
@@ -99,7 +153,7 @@ class IssueBook(models.Model):
 			'book_detail_id' : self.book_name_id.book_name,
 		}
 		self.write({
-			'books_line_ids' :[(0,0,vals)]
+			'books_line_ids' :[(1,ID,vals)]
 			})
 
 
@@ -133,7 +187,7 @@ class IssueBook(models.Model):
 					register.create({
 						'book_id': globle_book_id,
 						'book_name':line.book_detail_id.book_name,
-						'issuing_date':rec.issue_date
+						'issuing_date':date.today()
 						})
 		action = {
 			'type':"ir.actions.act_window",

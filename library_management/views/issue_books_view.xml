@@ -25,6 +25,7 @@
                       <button name="issue_book_view" class="oe_highlight" states="draft" string="Issue" type="object"/>
                       <button name="return_view" class="oe_highlight" states="done" string="Return" type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,done,return"/>
+                    <button name="issue_book_mail" class="oe_highlight" string="mail" type="object"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
