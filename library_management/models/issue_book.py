@@ -21,11 +21,41 @@ class IssueBook(models.Model):
 
 	@api.onchange('book_quantity')
 	def _onchange_book_quantity(self):
-		for rec in self:
-			for line in rec.books_line_ids:
-				register_book_data = self.env["register.books"].search([('id','=',line.id)])
-				print(":::::::::::::::::::::::::::::",register_book_data)
-				# register_book_data.id = element.id
+		print(":::::::::::::",self._origin.id)
+		for element in self:
+			# book_get = element['book_name_id']
+
+			print("-----------------------")
+			# print(register_book_data)
+			# print(register_book_data.issue_bookline_ids)
+			print('-------------------------')
+			print('\n\n\n\n')
+			# register_book_data.issue_bookline_ids = element.id
+			vals = {
+			'book_detail_id': element.book_name_id.id,
+			'issue_quantity': element.book_quantity,
+			'book_types_ids': element.books_line_ids.book_types_ids
+			}
+			if element.book_name_id:
+				self.write({
+					'books_line_ids': [(0,0,vals)]
+
+					})
+
+			if element.books_line_ids:
+				print("yes")
+				print('element.books_line_ids',element.books_line_ids)
+				register_book_data = self.env["register.books"].search([
+					('book_detail_id','=',element.book_name_id.id)])
+				print('\n\n\n\n')
+				print("-----------------------")
+				print(register_book_data.ids)
+				# print(register_book_data.issue_bookline_ids)
+				print('-------------------------')
+				print('\n\n\n\n')
+
+
+				# print(":::::::::::::::::::::<<<>>>\n\n\n",register_book_data)
 
 		# record_book = self.env["book.details"].search([('id','=',self.book_name_id.id)])
 

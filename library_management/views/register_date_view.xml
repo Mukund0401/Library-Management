@@ -4,7 +4,7 @@
         <field name="name">register.date.tree.view</field>
         <field name="model">register.date</field>
         <field name="arch" type="xml">
-            <tree  decoration-danger="return_date == 'False'">
+            <tree decoration-danger="return_date == False">
                 <field name="book_id"/>
                 <field name="book_name"/>
                 <field name="issuing_date"/>
