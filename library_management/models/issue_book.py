@@ -16,20 +16,14 @@ class IssueBook(models.Model):
 	issue_date = fields.Date(string="Issue Date", readonly=True)
 	return_date = fields.Date(string=" Return Date", readonly=True)
 	state = fields.Selection(selection=[('draft', 'Not_IssueBook'),('done', 'IssueBook'),('return','Thank u')], string='Status', required=True, readonly=True, copy=False, tracking=True, default='draft')
-	deadline_date = fields.Date(string="Deadline", compute='compute_deadline')
+	deadline_date = fields.Date(string="Deadline", readonly=True)
 	total_charge = fields.Integer(string="Total Charge", compute="compute_total_charge")
 
 	@api.onchange('book_quantity')
 	def _onchange_book_quantity(self):
-		print(":::::::::::::",self._origin.id)
+		print("\n\n\n::::::::<<>>>",self._origin)
 		for element in self:
 			# book_get = element['book_name_id']
-
-			print("-----------------------")
-			# print(register_book_data)
-			# print(register_book_data.issue_bookline_ids)
-			print('-------------------------')
-			print('\n\n\n\n')
 			# register_book_data.issue_bookline_ids = element.id
 			vals = {
 			'book_detail_id': element.book_name_id.id,
@@ -42,17 +36,17 @@ class IssueBook(models.Model):
 
 					})
 
-			if element.books_line_ids:
-				print("yes")
-				print('element.books_line_ids',element.books_line_ids)
-				register_book_data = self.env["register.books"].search([
-					('book_detail_id','=',element.book_name_id.id)])
-				print('\n\n\n\n')
-				print("-----------------------")
-				print(register_book_data.ids)
-				# print(register_book_data.issue_bookline_ids)
-				print('-------------------------')
-				print('\n\n\n\n')
+			# if element.books_line_ids:
+			# 	print("yes")
+			# 	print('element.books_line_ids',element.books_line_ids)
+			# 	register_book_data = self.env["register.books"].search([
+			# 		('book_detail_id','=',element.book_name_id.id)])
+			# 	print('\n\n\n\n')
+			# 	print("-----------------------")
+			# 	print(register_book_data.ids)
+			# 	# print(register_book_data.issue_bookline_ids)
+			# 	print('-------------------------')
+			# 	print('\n\n\n\n')
 
 
 				# print(":::::::::::::::::::::<<<>>>\n\n\n",register_book_data)
@@ -83,29 +77,12 @@ class IssueBook(models.Model):
 			# 		})
 
 
-
-	# def issue_book_view(self):
-	# 	for rec in self:
-	# 		# rec.write({'state':'done'})
-	# 		register = self.env['register.date']
-	# 		for line in rec.books_line_ids:
-	# 			bookid_get = self.env['book.details'].search([('id', '=', line.book_detail_id.id)])
-	# 			globle_book_id = bookid_get.id
-	# 			for _ in range(line.issue_quantity or 1):
-	# 				print("\n\n\n", rec.books_line_ids)
-	# 				register.create({
-	# 					'book_id': globle_book_id,
-	# 					'book_name':line.book_detail_id.book_name,
-	# 					'issuing_date':date.today()
-	# 					})
 		
 
 	# _sql_constraints = [('xyz', 'unique(phone)', 'xyz')]
 
 
 
-	# @api.constraints
-	# def check_email(self):
 
 	def issue_book_mail(self):
 		template = self.env.ref('library_management.user_mail_id').id
@@ -118,25 +95,6 @@ class IssueBook(models.Model):
 	# 		rec.unlink()
 	# 		# print("ncfbbcfedfbcvd",rec)
 	# 	return super(IssueBook,self).unlink()
-
-	# def unlink(self):
-	# 	test_unlnk = self.env['register.books'].search([('empty_id','=',self.id)]).unlink()
-	# 	if 'empty_id' in test_unlnk:
-	# 		raise ValidationError("HELlo")
-	# 	return super(IssueBook,self).unlink()
-	# 	print(":::::::::::::::::::::::","Hello")
-
-	def compute_deadline(self):
-		for rec in self:
-			rec.deadline_date = 0
-			if rec.issue_date:
-				rec.deadline_date = rec.issue_date + timedelta(days=15)
-		# print("::::::::::::::::::",current_date)
-		# print("::::::::::::::::::::",type(current_date))
-		# # self.issue_date = self.issue_date.strftime('%Y-%m-%d')
-		# print(":::::::::::::::::\n\n\n",self.issue_date)
-		# print(":::<<><<<<<<<<<<<<",type(self.issue_date))
-		# # self.deadline_date = 
 
 
 
@@ -156,24 +114,6 @@ class IssueBook(models.Model):
 					else:
 						for i in range((days_calculation // 5) - 1):
 							rec.total_charge += rec.total_charge
-
-	"""
-		# To count the delay charges
-	def _compute_delay_charges(self):
-		for rec in self:
-			rec.delay_charges = 0
-			if rec.return_date:
-				for book in rec.book_lines_ids:
-					charges = self.env["book.details"].search([("id", "=", book.book_name_id.id)]).book_delay_charges
-					if str(rec.return_date) > str(rec.deadline_date):
-						rec.delay_charges += charges
-			if rec.delay_charges:
-				total_day = (rec.return_date - rec.deadline_date).days
-				print(rec.delay_charges)
-				for i in range((total_day // 5) - 1):
-					rec.delay_charges += rec.delay_charges
-
-	"""
 
 
 
@@ -207,17 +147,18 @@ class IssueBook(models.Model):
 
 	def issue_book_view(self):
 		for rec in self:
+			rec.deadline_date = date.today() + timedelta(days=15)
 			# rec.write({'state':'done'})
 			register = self.env['register.date']
 			for line in rec.books_line_ids:
 				bookid_get = self.env['book.details'].search([('id', '=', line.book_detail_id.id)])
 				globle_book_id = bookid_get.id
 				for _ in range(line.issue_quantity or 1):
-					print("\n\n\n", rec.books_line_ids)
 					register.create({
 						'book_id': globle_book_id,
 						'book_name':line.book_detail_id.book_name,
-						'issuing_date':date.today()
+						'issuing_date':date.today(),
+						'deadline_date':rec.deadline_date
 						})
 		action = {
 			'type':"ir.actions.act_window",
@@ -227,7 +168,6 @@ class IssueBook(models.Model):
 			'target':'new',
 			'context':{
 				"default_issue_date":date.today(),
-				# "default_book_name":rec.book_name_id.book_name
 			}
 		}
 		return action

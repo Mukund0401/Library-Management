@@ -35,7 +35,7 @@ class BookDetails(models.Model):
 	def name_get(self):
 		result = []
 		for rec in self:
-		   n = str(rec.book_name)+ '' + str(rec.author_detail_id.author_name) +str(rec.book_id)
+		   n = str(rec.book_name)+ ':::' + str(rec.author_detail_id.author_name) 
 		   result.append((rec.id,n))
 		return result
 

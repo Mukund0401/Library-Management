@@ -15,7 +15,9 @@
         'views/issue_books_view.xml',
         'views/register_date_view.xml',
         'views/book_type_view.xml',
-        'wizard/issue_book_button_view.xml'
+        'wizard/issue_book_button_view.xml',
+        'report/book_report.xml',
+        'report/book_report_templates.xml'
         
     ],
     "demo": [],

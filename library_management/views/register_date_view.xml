@@ -9,6 +9,7 @@
                 <field name="book_name"/>
                 <field name="issuing_date"/>
                 <field name="return_date"/>
+                <field name="deadline_date"/>
             </tree>
         </field>
     </record>
@@ -22,6 +23,7 @@
                         <field name="book_name"/>
                         <field name="issuing_date"/>
                         <field name="return_date"/>
+                        <field name="deadline_date"/>
                     </group>
                 </sheet>
             </form>

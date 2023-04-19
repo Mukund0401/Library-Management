@@ -9,13 +9,13 @@
             	<sheet>
                     <group>
                     <!-- <field name="book_name" readonly='True'/> -->
-                	   <field name="issue_date" readonly='True'/>
+                	   <field name="issue_date"/>
                    </group>
                 </sheet>
                 <footer>
                 	<button special='cancel' string='cancel' class=
             		'btn-secondary'/>
-            		<button name='action_confrom' string="Confrom" type="object"
+            		<button name='action_confrom' string="Confirm" type="object"
         			class='btn-primary'/>
                 </footer>
             </form>

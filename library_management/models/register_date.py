@@ -7,5 +7,6 @@ class RegisterDate(models.Model):
 	book_name = fields.Char(string="Book",readonly=True)
 	issuing_date = fields.Char(string="Issue Date",readonly=True)
 	return_date = fields.Char(string="Return Date",readonly=True)
+	deadline_date = fields.Date(string='Deadline Date', readonly=True)
 
 	
