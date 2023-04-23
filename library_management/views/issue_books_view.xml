@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding='utf-8' ?>
+
+<odoo>
+	<record model="ir.ui.view" id="issue_books_tree_view">
+        <field name="name">issue.books.tree.view</field>
+        <field name="model">issue.book</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="books_line_ids"/>
+                <field name="user_id"/>
+                <field name="address"/>
+                <field name="phone"/>
+                <field name="book_name_id"/>
+                <field name="issue_date"/>
+                <field name="return_date"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="issue_books_form_view">
+        <field name="name">issue.books.form.view</field>
+        <field name="model">issue.book</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                      <button name="issue_book_view" class="oe_highlight" states="draft" string="Issue" type="object"/>
+                      <button name="return_view" class="oe_highlight" states="done" string="Return" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done,return"/>
+                    <button name="issue_book_mail" class="oe_highlight" string="mail" type="object"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                       <button name="ref_button"
+                            type="object"
+                            class="btn btn-primary"
+                            string="Author">
+                        </button>  
+                    </div>
+                    <group>
+                        <group>
+                            <field name="user_id"/>
+                            <field name="address"/>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="issue_date"/>
+                            <field name="return_date"/>
+                        </group>
+                        <group>
+                            <field name="book_name_id"/>
+                            <field name="book_quantity"/>
+                            <field name='deadline_date'/>
+                            <field name='total_charge'/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Book Details">
+                        <field name="books_line_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+ 	<record id="action_issue_book_information" model="ir.actions.act_window">
+        <field name="name">Issue Book Information</field>
+        <field name="res_model">issue.book</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="issue_book_details"
+            name="Issue Book"
+            parent="author_information"
+            action="action_issue_book_information"
+            sequence="5"/>
+
+</odoo>

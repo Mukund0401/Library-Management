@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="user_mail_id" model="mail.template">
+        <field name="name">Issue Book template</field>
+        <field name="model_id" ref="library_management.model_issue_book"/>
+        <field name="subject">Issue Book Email</field>
+        <field name="email_from">{{"mukund@icreativetechnolabs.com"}}</field>
+        <field name="email_to">{{"mukundrathod04@gmail.com"}}</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Aktiv</p>
+            </div>
+        </field>
+    </record>
+</odoo>
