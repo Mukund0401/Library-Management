@@ -12,7 +12,6 @@ class IssueBookButton(models.TransientModel):
 	def action_confrom(self):
 		if self._context.get('active_id', False):
 			issue = self.env['issue.book'].browse(self._context.get('active_id'))
-			print("\n\n\n uuyuyu",issue.state)
 			if issue:
 				issue.state = 'done'
 				issue.issue_date = self.issue_date

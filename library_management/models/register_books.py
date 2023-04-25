@@ -6,8 +6,10 @@ class RegisterBooks(models.Model):
 	# _rec_name = "book_detail_id"
 
 	book_detail_id = fields.Many2one('book.details',string='Book Name')
+	issue_bookline_ids = fields.Integer(string="Issue Book ID")
 	empty_id = fields.Many2one("issue.book")
 	issue_quantity = fields.Integer(string="Issue Quantity")
+	return_date = fields.Date(string="Return Date")
 	book_types_ids = fields.Many2many("book.type",string="Book Type")
 
 

@@ -17,11 +17,11 @@ class IssueBook(models.Model):
 	return_date = fields.Date(string=" Return Date", readonly=True)
 	state = fields.Selection(selection=[('draft', 'Not_IssueBook'),('done', 'IssueBook'),('return','Thank u')], string='Status', required=True, readonly=True, copy=False, tracking=True, default='draft')
 	deadline_date = fields.Date(string="Deadline", readonly=True)
+	# test_id = fields.Many2one('return.book.button',string='test')
 	total_charge = fields.Integer(string="Total Charge", compute="compute_total_charge")
 
 	@api.onchange('book_quantity')
 	def _onchange_book_quantity(self):
-		print("\n\n\n::::::::<<>>>",self._origin)
 		for element in self:
 			# book_get = element['book_name_id']
 			# register_book_data.issue_bookline_ids = element.id
@@ -33,61 +33,28 @@ class IssueBook(models.Model):
 			if element.book_name_id:
 				self.write({
 					'books_line_ids': [(0,0,vals)]
-
 					})
 
-			# if element.books_line_ids:
-			# 	print("yes")
-			# 	print('element.books_line_ids',element.books_line_ids)
-			# 	register_book_data = self.env["register.books"].search([
-			# 		('book_detail_id','=',element.book_name_id.id)])
-			# 	print('\n\n\n\n')
-			# 	print("-----------------------")
-			# 	print(register_book_data.ids)
-			# 	# print(register_book_data.issue_bookline_ids)
-			# 	print('-------------------------')
-			# 	print('\n\n\n\n')
-
-
-				# print(":::::::::::::::::::::<<<>>>\n\n\n",register_book_data)
-
-		# record_book = self.env["book.details"].search([('id','=',self.book_name_id.id)])
-
-		# vals= {
-		# 	"book_detail_id": self.book_name_id.id,
-		# 	"issue_quantity":self.book_quantity,
-		# 	"book_types_ids":[(6,0, record_book.book_type_ids.ids)]
-		# }		
-
-		# vals = {
-		# 	"book_name_id" : "33",
-		# 	"issue_quantity" : 2,
-		# }
-		# self.write({'books_line_ids' : [(0,0,vals)]})
-		# for line in self.books_line_ids:
-		# 	line.write({
-		# 		'book_detail_id':self.book_name_id.book_name,
-		# 		})
-			# print("::::\n\n\n",line.book_detail_id.book_name)
-			# bookid_get = self.env['book.details'].search([('id', '=', line.book_detail_id.id)])
-			# globle_book_id = bookid_get.id
-			# for _ in range(line.issue_quantity or 1):
-			# 	book_line.write({
-			# 		'book_name':line.book_detail_id.book_name
-			# 		})
+	
 
 
 		
 
 	# _sql_constraints = [('xyz', 'unique(phone)', 'xyz')]
 
-
-
+	def book_return_reminder(self):
+		print(":::::::<<<<>>>>>\n\n\n\n\n>>>>>>><<<<<<<")
+		reminder = self.env['register.date'].search([])
+		for rec in reminder:
+			print(rec.book_name)
+			if not rec.return_date:
+				self.issue_book_mail()
 
 	def issue_book_mail(self):
-		template = self.env.ref('library_management.user_mail_id').id
-		template_id = self.env['mail.template'].browse(template)
-		template_id.send_mail(self.id , force_send = True)
+		for rec in self:
+			template = self.env.ref('library_management.user_mail_id').id
+			template_id = self.env['mail.template'].browse(template)
+			template_id.send_mail(rec.id , force_send = True)
 
 	# def unlink(self):
 	# 	model_rec = self.env['register.books'].search([('id','=',self.books_line_ids.id)])
@@ -131,7 +98,6 @@ class IssueBook(models.Model):
 	def _onchange_name_detail(self):
 		for rec in self:
 			read_data = self.env["res.partner"].search_read([("id", "=", rec.user_id.id)],['user_id',"email",'phone'])
-			print("\n\n\n\n\n",read_data)
 			rec.email = ""
 			if rec.user_id:
 				res_data = self.env["res.partner"].search([("id", "=", rec.user_id.id)])
@@ -158,8 +124,12 @@ class IssueBook(models.Model):
 						'book_id': globle_book_id,
 						'book_name':line.book_detail_id.book_name,
 						'issuing_date':date.today(),
-						'deadline_date':rec.deadline_date
+						'deadline_date':rec.deadline_date,
+						'issue_quantity':rec.book_quantity
 						})
+					append = self.env["register.books"].search([('id','=',line.id)])
+					append.issue_bookline_ids=self.id
+
 		action = {
 			'type':"ir.actions.act_window",
 			'res_model':"issue.book.button",
@@ -175,41 +145,26 @@ class IssueBook(models.Model):
 		# change_outcoming_date = self.env["register.books"].search([()]
 		
 
-		
-
-	
-
-
-
-
-
 	def return_view(self):
 		for rec in self:
-			rec.write({'state': "return"})
+			print("jwbhdryuwgbdvretyuwdrgfy3uergyu8gu67hjh6gh5drf774")
+			# rec.write({'state': "return"})
 			rec.return_date = date.today()
-			for data in rec.books_line_ids:
-				register = self.env["register.date"].search([("book_id", "=", data.book_detail_id.id)])
-				register.return_date = date.today()
-		# fields = ['name','city']
-		# partner_id = self.env['res.partner'].read_group([('city','=','Fremont')], 
-		# 	fields=['name'],groupby=['city','name'])
-		# print("\n\n\n\n",partner_id)
-
-
-	# def read_partner(self):
-	
-	# def unlink(self):
-	# 	model_rec = self.env['register.books'].search([('id','=',self.books_line_ids.ids)])
-	# 	for rec in model_rec:
-	# 		rec.unlink()
-	# 		print("abcdfddsgs",rec)
-	# 	return super(IssueBook,self).unlink()
-
-	# @api.model
-	# def create(self,vals):
-	# 	print("::::::::::::::::::::::::::::::::::::::::::::::::",vals)
-
-	# 	if not vals.get('user_id'):
-	# 		seq = self.env["register.date"].search([('id', '=', vals.books_line_ids)])
-	# 		print("::::::::::::::::::::::::::::::::::::::::::::::::",seq)
-	# 		vals['book_code'] = seq.book_name
+		test_date = self.env['return.book.button'].search([('id','=',self._context.get('active_id'))])
+		print(" **** test_date.temperory_date ****",test_date.temperory_date)
+		data_list = []
+		for data in self.books_line_ids:
+			register = self.env["register.date"].search([("book_id", "=", data.book_detail_id.id)])
+			register.return_date = rec.return_date
+			data_list.append((0,0,{'books_id':data.book_detail_id.id,
+				'book_quantity':data.issue_quantity}))
+		return  {
+				'type':"ir.actions.act_window",
+				'res_model':"return.book.button",
+				'name':("Book Line ID"),
+				'view_mode':'form',
+				'target':'new',
+				'context':{
+					"default_test_ids": data_list
+				}
+			}

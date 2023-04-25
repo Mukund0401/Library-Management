@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding='utf-8' ?>
+
+<odoo>
+	<record model="ir.ui.view" id="return_book_button_form_view">
+        <field name="name">return.book.button.form.view</field>
+        <field name="model">return.book.button</field>
+        <field name="arch" type="xml">
+            <form>
+            	<sheet>
+                    <group>
+                    <!-- <field name="book_name" readonly='True'/> -->
+                	   <!-- <field name="test_ids"/> -->
+                       <!-- <field name="reture_book"/> -->
+                       <field name='test_ids'>
+                           <tree>
+                                <field name='books_id'/>
+                                <field name='book_quantity'/>
+                                <field name='return_date'/>
+                                <field name="remaining_quantity"/> 
+                            </tree>
+                       </field>
+                       <field name='book_return' widget="radio"/>
+                       <field name="returned_quantity"/>
+                       
+                       <!--  <button name="return_button"
+                                    type="object"
+                                    class="btn btn-primary"
+                                    string="Return">
+                        </button> -->
+                   </group>
+                </sheet>
+                <footer>
+                	<button special='cancel' string='cancel' class=
+            		'btn-secondary'/>
+            		<button name='action_done' string="Done" type="object"
+        			class='btn-primary'/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- <record id="action_issue_book_button" model="ir.actions.act_window">
+        <field name="name">Issue Book Button</field>
+        <field name="res_model">issue.book.button</field>
+        <field name="view_mode">form</field>
+    </record> -->
+</odoo>
