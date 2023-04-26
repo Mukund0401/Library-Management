@@ -17,6 +17,7 @@ class IssueBook(models.Model):
 	return_date = fields.Date(string=" Return Date", readonly=True)
 	state = fields.Selection(selection=[('draft', 'Not_IssueBook'),('done', 'IssueBook'),('return','Thank u')], string='Status', required=True, readonly=True, copy=False, tracking=True, default='draft')
 	deadline_date = fields.Date(string="Deadline", readonly=True)
+	nation = fields.Selection(selection=[('india', 'INDIA'),('Pakistan', 'Pakistan')])
 	# test_id = fields.Many2one('return.book.button',string='test')
 	total_charge = fields.Integer(string="Total Charge", compute="compute_total_charge")
 
@@ -35,15 +36,18 @@ class IssueBook(models.Model):
 					'books_line_ids': [(0,0,vals)]
 					})
 
-	
 
-
-		
+	@api.constrains("books_line_ids")
+	def book_count(self):
+		for rec in self.books_line_ids:
+			test = self.env["register.books"].search_count([("book_detail_id", "=", rec.book_detail_id.id), ("empty_id", "=", self.id)])
+			print(":::::::::\n\n\n\n::::::::",test)
+			if test>1:
+				raise ValidationError("Selected book already added in the list.")
 
 	# _sql_constraints = [('xyz', 'unique(phone)', 'xyz')]
 
 	def book_return_reminder(self):
-		print(":::::::<<<<>>>>>\n\n\n\n\n>>>>>>><<<<<<<")
 		reminder = self.env['register.date'].search([])
 		for rec in reminder:
 			print(rec.book_name)
@@ -119,13 +123,13 @@ class IssueBook(models.Model):
 			for line in rec.books_line_ids:
 				bookid_get = self.env['book.details'].search([('id', '=', line.book_detail_id.id)])
 				globle_book_id = bookid_get.id
-				for _ in range(line.issue_quantity or 1):
+				for i in range(line.issue_quantity or 1):
 					register.create({
+						'entry_id':rec.id,
 						'book_id': globle_book_id,
 						'book_name':line.book_detail_id.book_name,
 						'issuing_date':date.today(),
-						'deadline_date':rec.deadline_date,
-						'issue_quantity':rec.book_quantity
+						'deadline_date':rec.deadline_date
 						})
 					append = self.env["register.books"].search([('id','=',line.id)])
 					append.issue_bookline_ids=self.id
@@ -168,3 +172,17 @@ class IssueBook(models.Model):
 					"default_test_ids": data_list
 				}
 			}
+
+
+
+	#for context___Nation
+	def wizard_view(self):
+		for rec in self:
+			if rec.nation=="india":
+				return {
+						'type':"ir.actions.act_window",
+						'res_model':"selection.wizard",
+						'name':("nation"),
+						'view_mode':'form',
+						'target':'new'
+						}

@@ -26,6 +26,7 @@
                       <button name="return_view" class="oe_highlight" states="done" string="Return" type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,done,return"/>
                     <button name="issue_book_mail" class="oe_highlight" string="mail" type="object"/>
+                    <button name="wizard_view" context="{'date':nation}" type="object" string="setup" class="float-right btn-primary"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -49,6 +50,7 @@
                             <field name="book_quantity"/>
                             <field name='deadline_date'/>
                             <field name='total_charge'/>
+                            <field name='nation' widget="radio"/>
                         </group>
                     </group>
                     <notebook>

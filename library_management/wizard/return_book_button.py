@@ -14,34 +14,43 @@ class ReturnBookButton(models.TransientModel):
 
 
 	def action_done(self):
-		if self._context.get('active_id', False):
-			issue = self.env['issue.book'].browse(self._context.get('active_id'))
-			print("\n\n\n uuyuyu",issue.state)
-			if issue:
-				issue.state = 'return'
+		for rec in self.test_ids:
+			issue = self.env['register.date'].search([('return_date','=',False),('entry_id','=',self._context.get('active_id'))])
+			for record in issue:
+				record.state = 'return'
+				for i in range(rec.returned_quantity):
+					print("\n\n\n\n record",record)
+					issue[i].return_date=date.today()
+
+		# if self._context.get('active_id', False):
+		# 	print("\n\n\n uuyuyu",self._context.get('active_id', False))
+			# if issue:
+			# 	issue.state = 'return'
 				# print("::::::::>>>><<<<<<<<<",self.temperory_date)
 				# issue.return_date = self.temperory_date
 
+   # _sql_constraints = [('xyz', 'unique(phone)', 'xyz')]
 
-	@api.onchange('book_return')
-	def _onchange_return_date(self):
-		for rec in self:
-			if rec.book_return=='yes':
-				rec.temperory_date = date.today()
-				# print("\nself.temperory_date",rec.temperory_date)
-				vals={
-					"return_date":rec.temperory_date
-				}
-				rec.write({
-						"test_ids":[(1, rec.test_ids.id, vals)]
-						})
-			else:
-				vals={
-					"return_date":False
-				}
-				rec.write({
-					"test_ids":[(1, rec.test_ids.id, vals)]
-					})
+	# @api.onchange('book_return')
+	# def _onchange_return_date(self):
+	# 	for rec in self:
+	# 		for record in rec.test_ids:
+	# 			if rec.book_return=='yes':
+	# 				rec.temperory_date = date.today()
+	# 				# print("\nself.temperory_date",rec.temperory_date)
+	# 				vals={
+	# 					"return_date":rec.temperory_date
+	# 				}
+	# 				rec.write({
+	# 						"test_ids":[(1, record.id, vals)]
+	# 						})
+	# 			else:
+	# 				vals={
+	# 					"return_date":False
+	# 				}
+	# 				rec.write({
+	# 					"test_ids":[(1, record.id, vals)]
+	# 					})
 
 
 	@api.onchange('returned_quantity')

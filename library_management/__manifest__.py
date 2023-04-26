@@ -18,6 +18,7 @@
         'views/book_type_view.xml',
         'wizard/issue_book_button_view.xml',
         'wizard/return_book_button_view.xml',
+        'wizard/selection_wizard.xml',
         'report/book_report.xml',
         'report/book_report_templates.xml'
         

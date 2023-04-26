@@ -13,7 +13,7 @@ class RegisterBooks(models.Model):
 	book_types_ids = fields.Many2many("book.type",string="Book Type")
 
 
-
+	
 
 	# def unlink(self):
 	# 	test_link = self.env['issue.book'].search([]).books_line_ids.book_detail_id

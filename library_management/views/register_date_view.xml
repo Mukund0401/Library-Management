@@ -5,12 +5,12 @@
         <field name="model">register.date</field>
         <field name="arch" type="xml">
             <tree decoration-danger="return_date == False">
+                <field name="entry_id"/>
                 <field name="book_id"/>
                 <field name="book_name"/>
                 <field name="issuing_date"/>
                 <field name="return_date"/>
                 <field name="deadline_date"/>
-                <field name='issue_quantity'/>
             </tree>
         </field>
     </record>
@@ -25,7 +25,6 @@
                         <field name="issuing_date"/>
                         <field name="return_date"/>
                         <field name="deadline_date"/>
-                        <field name='issue_quantity'/>
                     </group>
                 </sheet>
             </form>
