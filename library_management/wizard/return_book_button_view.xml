@@ -16,11 +16,10 @@
                                 <field name='books_id'/>
                                 <field name='book_quantity'/>
                                 <field name='return_date'/>
+                                <field name="returned_quantity"/>
                                 <field name="remaining_quantity"/> 
                             </tree>
                        </field>
-                       <field name='book_return' widget="radio"/>
-                       <field name="returned_quantity"/>
                        
                        <!--  <button name="return_button"
                                     type="object"

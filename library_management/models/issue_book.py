@@ -5,6 +5,7 @@ from odoo.exceptions import ValidationError
 
 class IssueBook(models.Model):
 	_name = 'issue.book'
+	# _inherit = "mail.thread"
 
 	user_id = fields.Many2one("res.partner",string="User Name")
 	books_line_ids = fields.One2many('register.books','empty_id',string="Books")
@@ -17,9 +18,26 @@ class IssueBook(models.Model):
 	return_date = fields.Date(string=" Return Date", readonly=True)
 	state = fields.Selection(selection=[('draft', 'Not_IssueBook'),('done', 'IssueBook'),('return','Thank u')], string='Status', required=True, readonly=True, copy=False, tracking=True, default='draft')
 	deadline_date = fields.Date(string="Deadline", readonly=True)
-	nation = fields.Selection(selection=[('india', 'INDIA'),('Pakistan', 'Pakistan')])
+	nation = fields.Selection(selection=[('india', 'India'),('pakistan', 'Pakistan')], string='Nationality')
+
 	# test_id = fields.Many2one('return.book.button',string='test')
 	total_charge = fields.Integer(string="Total Charge", compute="compute_total_charge")
+	# remaining_book = fields.Integer(string="Remaining Book",compute="compute_remaining_book")
+
+	
+	# @api.depends('book_name_id')
+	# def compute_remaining_book(self):
+	# 	for rec in self:
+	# 		if rec.issue_date:
+	# 			remaining_count = self.env['register.date'].search_count([('entry_id','=',rec.id),('return_date','=',False)])
+
+
+
+
+
+
+
+
 
 	@api.onchange('book_quantity')
 	def _onchange_book_quantity(self):
@@ -153,13 +171,12 @@ class IssueBook(models.Model):
 		for rec in self:
 			print("jwbhdryuwgbdvretyuwdrgfy3uergyu8gu67hjh6gh5drf774")
 			# rec.write({'state': "return"})
-			rec.return_date = date.today()
+			# rec.return_date = date.today()
 		test_date = self.env['return.book.button'].search([('id','=',self._context.get('active_id'))])
-		print(" **** test_date.temperory_date ****",test_date.temperory_date)
 		data_list = []
 		for data in self.books_line_ids:
 			register = self.env["register.date"].search([("book_id", "=", data.book_detail_id.id)])
-			register.return_date = rec.return_date
+			# register.return_date = rec.return_date
 			data_list.append((0,0,{'books_id':data.book_detail_id.id,
 				'book_quantity':data.issue_quantity}))
 		return  {
@@ -177,12 +194,14 @@ class IssueBook(models.Model):
 
 	#for context___Nation
 	def wizard_view(self):
-		for rec in self:
-			if rec.nation=="india":
-				return {
-						'type':"ir.actions.act_window",
-						'res_model':"selection.wizard",
-						'name':("nation"),
-						'view_mode':'form',
-						'target':'new'
-						}
+		return {
+				'type':"ir.actions.act_window",
+				'res_model':"selection.wizard",
+				'name':("nation"),
+				'view_mode':'form',
+				'target':'new'
+				}
+			
+
+	#Compute Remaining Book
+

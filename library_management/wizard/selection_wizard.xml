@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding='utf-8' ?>
-
-
 <odoo>
-	<record model="ir.ui.view" id="issue_book_button_form_view">
+	<record model="ir.ui.view" id="selection_wizard_form_view">
         <field name="name">selection.wizard.form.view</field>
         <field name="model">selection.wizard</field>
         <field name="arch" type="xml">
             <form>
             	<sheet>
                     <group>
-                    <!-- <field name="book_name" readonly='True'/> -->
-                	   <field name="first_name"/>
-                	   <field name="mid_name"/>
+                	   <field name="first_name" invisible="context.get('data') in ('india',True)"/>
+                	   <field name="mid_name" invisible="context.get('data')=='pakistan'"/>
                 	   <field name="last_name"/>
                    </group>
                 </sheet>

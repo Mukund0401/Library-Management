@@ -7,74 +7,31 @@ class ReturnBookButton(models.TransientModel):
 
 	# reture_book = fields.Boolean(string="Return Individual Book")
 	test_ids = fields.One2many('return.book.buttons','return_book_id',string='TEST')
-	book_return = fields.Selection([('yes', 'Yes'), ('no', 'No')], string="Book Return Yes Or No")
-	returned_quantity = fields.Integer("Return Quantity ")
-	temperory_date = fields.Date(string="Return Date")
 	# book_name = fields.
 
 
 	def action_done(self):
+		if self._context.get('active_id', False):
+			issue = self.env['issue.book'].browse(self._context.get('active_id'))
+			if issue:
+				issue.state = 'return'
 		for rec in self.test_ids:
-			issue = self.env['register.date'].search([('return_date','=',False),('entry_id','=',self._context.get('active_id'))])
-			for record in issue:
-				record.state = 'return'
-				for i in range(rec.returned_quantity):
-					print("\n\n\n\n record",record)
-					issue[i].return_date=date.today()
-
-		# if self._context.get('active_id', False):
-		# 	print("\n\n\n uuyuyu",self._context.get('active_id', False))
-			# if issue:
-			# 	issue.state = 'return'
-				# print("::::::::>>>><<<<<<<<<",self.temperory_date)
-				# issue.return_date = self.temperory_date
-
-   # _sql_constraints = [('xyz', 'unique(phone)', 'xyz')]
-
-	# @api.onchange('book_return')
-	# def _onchange_return_date(self):
-	# 	for rec in self:
-	# 		for record in rec.test_ids:
-	# 			if rec.book_return=='yes':
-	# 				rec.temperory_date = date.today()
-	# 				# print("\nself.temperory_date",rec.temperory_date)
-	# 				vals={
-	# 					"return_date":rec.temperory_date
-	# 				}
-	# 				rec.write({
-	# 						"test_ids":[(1, record.id, vals)]
-	# 						})
-	# 			else:
-	# 				vals={
-	# 					"return_date":False
-	# 				}
-	# 				rec.write({
-	# 					"test_ids":[(1, record.id, vals)]
-	# 					})
-
-
-	@api.onchange('returned_quantity')
-	def _onchange_returned_quantity(self):
-		# print("\n\n\n::::::::::::::::::::::>>><<<<<<<<",self)
-		print("::::::::",self.returned_quantity)
+			return_book_date = self.env["register.date"].search([
+								("entry_id","=", self._context.get("active_id")),
+								("return_date", "=", False),
+								("book_id", "=", rec.books_id.id)
+								])
+			for book_line in return_book_date:
+				for book in range(rec.returned_quantity):
+					return_book_date[book].return_date = date.today()
+		
+	
 
 
 
 
 
 
-	# 		print(self.return_date)
-		# if self.book_return=="yes":
-		# 	print("\n\n\n\n\n",self.book_return)
-		# 	self.test_ids.return_date='Good'
-		# 	print(self.test_ids.return_date)
-		# else:
-		# 	pass
-
-
-
-
-	# books_line_ids = fields.One2many('register.books','empty_id',string="Return Book")
 
 
 class ReturnBookButtons(models.TransientModel):
@@ -84,8 +41,8 @@ class ReturnBookButtons(models.TransientModel):
 	book_quantity = fields.Integer(string='Issued Quantity', readonly=True)
 	return_date = fields.Date(string="Return Date", readonly=True)
 	books_id = fields.Many2one("book.details",string='Book Name',  readonly=True)
-	remaining_quantity = fields.Integer(string="Remaining Quantity", default=0)
-	book_return = fields.Selection([('yes', 'Yes'), ('no', 'No')], string="Book Return Yes Or No")
+	remaining_quantity = fields.Integer(string="Remaining Quantity", default=0, readonly=True)
+	returned_quantity = fields.Integer("Return Quantity ")
 			 	
 	# @api.onchange("reture_book")
 	# def add_data(self):

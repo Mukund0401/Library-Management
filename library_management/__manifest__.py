@@ -4,7 +4,7 @@
     "version": "14.0.0.1.0",
     "category": "Management",
     "website": "https://www.aktivsoftware.com/",
-    "depends": ['mail'],
+    "depends": ['mail','sale'],
     "data": [
         'security/ir.model.access.csv',
         'views/author_name_view.xml',
@@ -14,6 +14,8 @@
         'views/book_details_view.xml',
         'views/register_books_view.xml',
         'views/issue_books_view.xml',
+        'views/sale_order_view.xml',
+        'views/contact_partner_view.xml',
         'views/register_date_view.xml',
         'views/book_type_view.xml',
         'wizard/issue_book_button_view.xml',

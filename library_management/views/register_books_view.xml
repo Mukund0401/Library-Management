@@ -7,8 +7,9 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="book_detail_id"/>
-                <field name="issue_quantity"/>
                 <field name='book_types_ids' widget='many2many_tags'/>
+                <field name="issue_quantity"/>
+                <field name='reamaining_quantity'/>
             </tree>
         </field>
     </record>

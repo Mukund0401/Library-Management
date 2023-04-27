@@ -8,3 +8,6 @@ class SelectionWizard(models.TransientModel):
 	first_name = fields.Char("First Name")
 	mid_name = fields.Char("Mid Name")
 	last_name = fields.Char("Last Name")
+
+	def action_confrom(self):
+		pass

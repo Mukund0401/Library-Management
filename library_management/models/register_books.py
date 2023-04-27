@@ -9,30 +9,9 @@ class RegisterBooks(models.Model):
 	issue_bookline_ids = fields.Integer(string="Issue Book ID")
 	empty_id = fields.Many2one("issue.book")
 	issue_quantity = fields.Integer(string="Issue Quantity")
-	return_date = fields.Date(string="Return Date")
+	# return_date = fields.Date(string="Return Date")
 	book_types_ids = fields.Many2many("book.type",string="Book Type")
-
-
-	
-
-	# def unlink(self):
-	# 	test_link = self.env['issue.book'].search([]).books_line_ids.book_detail_id
-	# 	print("::::::::::>>><<<<<<<<",test_link)
-	# 	for rec in test
-		# # if 'id' in test_link:
-		# # 	raise ValidationError("Sorry You Can't delete this file")
-		# # else:
-		# return super(RegisterBooks,self).unlink()
-
-	
-
-
-	# def unlink(self):
-	# 	model_rec = self.env['issue.book'].search([]).books_line_ids.book_detail_id
-	# 	for rec in model_rec:
-	# 		for record in self.book_detail_id:
-	# 			if rec.id == record.id:
-	# 				raise ValidationError("YOU CANONOT DELETE THIS RECORD")
+	reamaining_quantity = fields.Char("Ramaining Quantity", compute="_compute_remaining_quantity")
 
 	@api.onchange('book_detail_id')
 	def _onchange_book_type(self):
@@ -42,18 +21,16 @@ class RegisterBooks(models.Model):
 				'book_types_ids':[(6,0,book_type.book_type_ids.ids)]
 				})
 		else:
-			return
+			pass
 
 
-	# def ref_button(self):
-	# 	vals={
-	# 	'book_name':'Amit123',
-	# 	'book_quantity':10
+	def _compute_remaining_quantity(self):
+		for rec in self:
+			rec.reamaining_quantity = 0
+			rec.reamaining_quantity = self.env["register.date"].search_count([("entry_id", "=", rec.empty_id.id), ("book_id", "=", rec.book_detail_id.id), ("return_date", "=", False)])
 
-	# 	}
-	# 	self.write({
-	# 		'book_detail_id':[(0,0,vals)]
-	# 		})
+
+
 
 
 
