@@ -34,6 +34,16 @@
         <field name="res_model">book.author</field>
         <field name="view_mode">tree,form</field>
     </record>
+    <record id="action_contacts" model="ir.actions.act_window">
+            <field name="name">Contacts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form,activity</field>
+            <field name="domain">[('is_author','=','True')]</field>
+    </record>
+
+    <menuitem id="author_detail" name="Author" sequence="2" action="action_contacts" parent="contacts.menu_contacts"/>
+
 
     <menuitem id="author_information"
             name="Library"

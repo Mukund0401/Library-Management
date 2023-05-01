@@ -20,10 +20,10 @@ class SaleOrder(models.Model):
 class ResPartner(models.Model):
 	_inherit = 'res.partner'
 
-
-	company_type = fields.Selection(string='Company Type',
-		selection=[('person', 'Individual'), ('company', 'Company'),('activ', 'Aktiv')],
-		compute='_compute_company_type', inverse='_write_company_type')
+	is_author = fields.Boolean(string="is author")
+	# company_type = fields.Selection(string='Company Type',
+	# 	selection=[('person', 'Individual'), ('company', 'Company'),('activ', 'Aktiv')],
+	# 	compute='_compute_company_type', inverse='_write_company_type')
 
 
 	def good(self):

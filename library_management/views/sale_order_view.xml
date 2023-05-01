@@ -5,14 +5,11 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-        	<!-- <field name="partner_id" position="before">
-        		<field name="sale_order"/>
-        	</field>
- -->            <xpath expr="//notebook" position="inside">
-                <page string="Sale Order">
-                    <field name="sale_order"/>
-                </page>
-            </xpath>
+        <xpath expr="//notebook" position="inside">
+            <page string="Sale Order">
+                <field name="sale_order"/>
+            </page>
+        </xpath>
     	</field>
     </record>
 </odoo>

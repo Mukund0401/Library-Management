@@ -5,11 +5,12 @@ from odoo.exceptions import ValidationError
 
 class IssueBook(models.Model):
 	_name = 'issue.book'
-	# _inherit = "mail.thread"
+	_inherit = ['mail.thread', 'mail.activity.mixin']
 
-	user_id = fields.Many2one("res.partner",string="User Name")
+	auser_id = fields.Many2one("res.partner",string="User Name")
 	books_line_ids = fields.One2many('register.books','empty_id',string="Books")
 	address = fields.Char(string="Address")
+	user_pic = fields.Image("User Image")
 	email = fields.Char(string="Email")
 	phone = fields.Char(string="Phone Number")
 	book_name_id = fields.Many2one('book.details',string="Book Name")
@@ -73,10 +74,11 @@ class IssueBook(models.Model):
 				self.issue_book_mail()
 
 	def issue_book_mail(self):
-		for rec in self:
-			template = self.env.ref('library_management.user_mail_id').id
-			template_id = self.env['mail.template'].browse(template)
-			template_id.send_mail(rec.id , force_send = True)
+		pass
+		# for rec in self:
+		# 	template = self.env.ref('library_management.user_mail_id').id
+		# 	template_id = self.env['mail.template'].browse(template)
+		# 	template_id.send_mail(rec.id , force_send = True)
 
 	# def unlink(self):
 	# 	model_rec = self.env['register.books'].search([('id','=',self.books_line_ids.id)])
@@ -116,13 +118,13 @@ class IssueBook(models.Model):
 			})
 
 
-	@api.onchange("user_id")
+	@api.onchange("auser_id")
 	def _onchange_name_detail(self):
 		for rec in self:
-			read_data = self.env["res.partner"].search_read([("id", "=", rec.user_id.id)],['user_id',"email",'phone'])
+			read_data = self.env["res.partner"].search_read([("id", "=", rec.auser_id.id)],['user_id',"email",'phone'])
 			rec.email = ""
-			if rec.user_id:
-				res_data = self.env["res.partner"].search([("id", "=", rec.user_id.id)])
+			if rec.auser_id:
+				res_data = self.env["res.partner"].search([("id", "=", rec.auser_id.id)])
 				rec.email = res_data.email
 				rec.phone = res_data.phone
 				if not res_data.street2:

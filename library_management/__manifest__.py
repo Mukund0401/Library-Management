@@ -4,7 +4,7 @@
     "version": "14.0.0.1.0",
     "category": "Management",
     "website": "https://www.aktivsoftware.com/",
-    "depends": ['mail','sale'],
+    "depends": ['contacts','mail','sale','base'],
     "data": [
         'security/ir.model.access.csv',
         'views/author_name_view.xml',

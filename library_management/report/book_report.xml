@@ -7,7 +7,7 @@
 			<field name="report_type">qweb-pdf</field>
 			<field name='report_name'>library_management.report_book</field>
 			<field name='report_file'>library_management.report_book</field>
-			<field name='print_report_name'>'Book - %s' % (object.user_id.name)</field>
+			<field name='print_report_name'>'Book - %s' % (object.auser_id.name)</field>
 			<field name="binding_model_id" ref='model_issue_book'/>
 			<field name='binding_type'>report</field>
 		</record>

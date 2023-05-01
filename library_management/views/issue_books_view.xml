@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="books_line_ids"/>
-                <field name="user_id"/>
+                <field name="auser_id"/>
                 <field name="address"/>
                 <field name="phone"/>
                 <field name="book_name_id"/>
@@ -36,9 +36,10 @@
                             string="Author">
                         </button>  
                     </div>
+                    <field name="user_pic" class="oe_avatar" widget='image'/>
                     <group>
                         <group>
-                            <field name="user_id"/>
+                            <field name="auser_id"/>
                             <field name="address"/>
                             <field name="email"/>
                             <field name="phone"/>
@@ -60,18 +61,54 @@
                         </page>
                     </notebook>
                 </sheet>
-              <!--   <div class="oe_chatter">
+                <!-- <div class="oe_chatter">
                     <field name="message_follower_ids"/>
                     <field name="message_ids"/>
                 </div> -->
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
+        </field>
+    </record>
+    <record id="issue_books_kanban_view" model="ir.ui.view">
+        <field name="name">issue.books.kanban.view</field>
+        <field name="model">issue.book</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="auser_id"/>
+                <field name="address"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div>
+                                <img class="o_kanban_image_inner_pic"
+                                    t-attf-src="kanban_image('issue.books','user_pic', record.id.raw_value)"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="auser_id"/>
+                                    <field name="address"/>
+                                    <field name="phone"/>
+                                    <field name="email"/>
+                                </strong>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 
  	<record id="action_issue_book_information" model="ir.actions.act_window">
         <field name="name">Issue Book Information</field>
         <field name="res_model">issue.book</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
     </record>
 
     <menuitem id="issue_book_details"

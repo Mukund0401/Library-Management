@@ -1,20 +1,36 @@
 <?xml version='1.0' encoding="utf-8"?>
 <odoo>
+	<template id="header_layout">
+		<div class="header">
+			<div class="row" style="border-bottom: 1px solid black;">
+				<h1>Issue book report</h1>
+			</div>
+		</div>
+		<div class="article o_report_layout_standard">
+			<t t-out='0'/>
+		</div>
+		<div class="footer">
+			<div class="row" style="border-bottom: 1px solid black;">
+				<p>Aktiv Software</p>
+			</div>
+		</div>
+	</template>
+
 	<template id='report_book'>
 		<t t-call='web.html_container'>
 			<t t-foreach='docs' t-as='doc'>
-				<t t-call='web.external_layout'>
-
+				<t t-call='library_management.header_layout'>
 					<h><b>Detail : User And Book</b></h><br/>
 					<div class="container">
 						<div class="row">
-							<img src="library_management/static/src/img/exam.jpg" style="width:10%;"/>
+							<img src="library_management/static/src/img/exam.jpg" style="width:30%;"/>
 						</div>
 					</div>
-					<span> User Name: <span t-field='doc.user_id'/></span><br/>
+					<span> User Name: <span t-field='doc.auser_id'/></span><br/>
 					<span> Email: <span t-field='doc.email'/></span><br/>
 					<span> Book Name: <span t-field='doc.book_name_id'/></span><br/>
 					<span> issue_date: <span t-field='doc.issue_date'/></span><br/>
+					
 				</t>
 			</t>
 		</t>
